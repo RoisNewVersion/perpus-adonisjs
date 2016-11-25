@@ -1,0 +1,76 @@
+{% extends 'layout/default' %}
+
+{% block titleTab %}
+    <h2>Book</h2>
+    <a href="{{'books/create' | route()}}" class="title-btn btn btn-info btn-sm">Add New</a>
+{% endblock %}
+
+{% block content %}
+
+<form id="formAdd" class="form-horizontal form-label-left" accept-charset="utf-8">
+<input type="hidden" name="type" id="type" value="">
+<input type="hidden" name="id_buku" id="id_buku" value="">
+<div class="form-group">
+<label class="control-label">Judul</label>
+<input class="form-control" type="text" id="judul" name="judul" placeholder="Judul" required>
+</div>
+
+<div class="form-group">
+<label class="control-label">Pengarang</label>
+<input class="form-control" type="text" name="pengarang" id="pengarang" placeholder="Pengarang" required>
+</div>
+
+<div class="form-group">
+<label class="control-label">Penerbit</label>
+<input class="form-control" id="penerbit" type="text" name="penerbit" placeholder="Penerbit" required>
+</div>
+
+<div class="form-group">
+<label class="control-label">ISBN</label>
+<input class="form-control" id="isbn" type="text" name="isbn" placeholder="ISBN" required="">
+</div>
+
+<div class="form-group">
+<label class="control-label">Tahun</label>
+<input class="form-control" id="tahun" type="text" name="tahun" placeholder="Tahun" required="">
+</div>
+
+<div class="form-group">
+<label class="control-label">Stok buku</label>
+<input class="form-control" id="stok" type="text" name="stok" placeholder="Stok buku" required="">
+</div>
+
+<div class="form-group">
+<label class="control-label"> Rak</label>
+<select class="form-control" name="rak" id="rak">
+<?php 
+$raks = $db->get('rak');
+foreach ($raks as $rak ) {
+echo '<option value="'.$rak['id_rak'].'">'.$rak['nama_rak'].'</option>';
+}
+?>
+
+</select>
+</div>
+
+<div class="form-group">
+<label class="control-label"> Kategori</label>
+<select class="form-control" name="kategori" id="kategori">
+<?php 
+$kategoris = $db->get('kategori');
+foreach ($kategoris as $kategori ) {
+echo '<option value="'.$kategori['id_kategori'].'">'.$kategori['nama_kategori'].'</option>';
+}
+?>
+
+</select>
+</div>
+
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-danger  btn-round btn-sm" data-dismiss="modal">Close</button>
+<button type="button" id="btnSubmit" class="btn btn-primary btn-round btn-sm"></button>
+</div>
+</form>
+
+{% endblock %}

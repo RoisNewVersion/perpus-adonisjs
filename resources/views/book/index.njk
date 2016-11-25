@@ -1,0 +1,146 @@
+{% extends 'layout/default' %}
+
+{% block titleTab %}
+    <h2>Book</h2>
+    <button id="openmodal" class="title-btn btn btn-info btn-sm">Add New</button>
+{% endblock %}
+
+{% block content %}
+    {% if old('message') %}
+      {{old('message')}}
+    {% endif %}
+    <div class="table-responsive">
+    	<table class="table table-hover">
+    		<thead>
+    			<tr>
+    				<th>UID Book</th>
+    				<th>Title</th>
+    				<th>Author</th>
+    				<th>Publisher</th>
+    				<th>ISBN</th>
+    				<th>Year</th>
+    				<th>Stock</th>
+    				<th>Rack</th>
+    				<th>Category</th>
+    				<th>Action</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			{% for book in books %}
+    			<tr>
+    				<td>{{ book.uid_book }}</td>
+    				<td>{{ book.title }}</td>
+    				<td>{{ book.author }}</td>
+    				<td>{{ book.publisher }}</td>
+    				<td>{{ book.isbn }}</td>
+    				<td>{{ book.year }}</td>
+    				<td>{{ book.stock }}</td>
+    				<td>{{ book.rack.rack_name }}</td>
+    				<td>{{ book.category.category_name }}</td>
+    				<td>
+    					<a class="btn btn-success btn-sm" href="{{ 'book/:id/edit' | route({id: book.id}) }}" title="Edit">Edit</a>
+    				</td>
+    			</tr>
+    			{% endfor %}
+    		</tbody>
+    	</table>
+    </div>
+    <!-- modal add -->
+        <div class="modal fade modal-wide" id="modalAdd" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2"></h4>
+              </div>
+              <div class="modal-body">
+
+                <form id="formAdd" action="{{ '/books' | route() }}" class="form-horizontal form-label-left" accept-charset="utf-8" method="post">
+                  <!-- <input type="hidden" name="type" id="type" value=""> -->
+                  <!-- <input type="hidden" name="id_book" id="id_book" value=""> -->
+                  {{csrfField}}
+                  <div class="form-group">
+                    <label class="control-label">Title</label>
+                    <input class="form-control" type="text" id="title" name="title" placeholder="Title" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label">Auhtor</label>
+                    <input class="form-control" type="text" name="author" id="author" placeholder="Author" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label">Publisher</label>
+                    <input class="form-control" id="publisher" type="text" name="publisher" placeholder="Publisher" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="control-label">ISBN</label>
+                    <input class="form-control" id="isbn" type="text" name="isbn" placeholder="ISBN" required="">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label">Year</label>
+                    <input class="form-control" id="year" type="text" name="year" placeholder="Year" required="">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label">Book stock</label>
+                    <input class="form-control" id="stok" type="text" name="stok" placeholder="Book stock" required="">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label"> Rack</label>
+                    <select class="form-control" name="rack" id="rack">
+                    {% for rack in racks %}
+                        <option value="{{ rack.id_rack}}">{{rack.rack_name}}</option>
+                    {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="control-label"> Kategori</label>
+                    <select class="form-control" name="category" id="category">
+                        {% for category in categories %}
+                            <option value="{{ category.id_category}}">{{category.category_name}}</option>'
+                        {% endfor %}
+                    </select>
+                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger  btn-round btn-sm" data-dismiss="modal">Close</button>
+                  <button type="submit" id="btnSubmit" class="btn btn-primary btn-round btn-sm">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- /modal add -->
+
+{% endblock %}
+
+{%block js %}
+    <script>
+        $(document).ready(function() {
+            console.log('ready');
+            // date year
+            $('#year').datepicker({
+              format: 'dd/mm/yy',
+            });
+            // click open modal
+            $('#openmodal').click(function(event) {
+              // console.log('aaa');
+              // tambah type
+              $('#formAdd')[0].reset();
+              $('#type').val('new');
+              $('#myModalLabel2').html('Add Book');
+              $('#btnSubmit').html('Save');
+              $('#modalAdd').modal('show');
+            });
+       
+        });
+    </script>
+{%endblock %}
